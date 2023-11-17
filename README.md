@@ -1,3 +1,0 @@
-# TeleShow
-
-dsdsd
