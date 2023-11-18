@@ -61,6 +61,11 @@
 			background: var(--tg-theme-secondary-bg-сolor);
 		}
 
+		#form {
+			display: none;
+			text-align: center;
+		}
+
 		input {
 			width: 90%;
 			outline: none;
@@ -86,12 +91,16 @@
 	</div>
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
 	<script>
-		let tg = window.Telegram.WebApp;
-		let buy = document.getElementById('buy');
-		tg.expand();
+		document.addEventListener("DOMContentLoaded", function() {
+			let tg = window.Telegram.WebApp;
+			let buy = document.getElementById('buy');
+			tg.expand();
 
-		buy.addEventListener("click", ()=> {
 			document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+
+			buy.addEventListener("click", ()=> {
+				tg.close();
+			});
 		});
 	</script>
 </body>
