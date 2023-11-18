@@ -88,6 +88,7 @@
 	<script>
 		let tg = window.Telegram.WebApp;
 		let buy = document.getElementById('buy');
+		document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 		tg.expand();
 
 		buy.addEventListener("click", ()=> {
