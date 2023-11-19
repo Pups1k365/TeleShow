@@ -83,19 +83,79 @@
 		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">|
 		<p>Yx Artem, popa top!</p>
 		<input type="text" placeholder="Ник" id="user_name">
-		<button id="buy">Играть</button>
+		<button id="play">Играть</button>
 	</div>
+	
+    <div id="gameOptions" style="display:none;">
+        <h1>Выберите действие</h1>
+        <button id="createGame">Создать игру</button>
+        <button id="joinGame">Зайти в игру</button>
+    </div>
+    
+    <form id="games" style="display:none;">
+        <h1>Код для друга</h1>
+        <input type="text" placeholder="Код игры" id="game_code">
+        <button id="enterGame">Войти в игру</button>
+    </form>
+    
+    <div id="success" style="display:none;">
+        <p>Успешно на странице</p>
+    </div>
+
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	<script>
-		let tg = window.Telegram.WebApp;
-		let buy = document.getElementById('buy');
-		tg.expand();
+    
+    <script>
+        let tg = window.Telegram.WebApp;
+        let play = document.getElementById('play');
+        let gameOptions = document.getElementById('gameOptions');
+        let createGame = document.getElementById('createGame');
+        let joinGame = document.getElementById('joinGame');
+        let gamesForm = document.getElementById('games');
+        let gameCodeInput = document.getElementById('game_code');
+        let enterGame = document.getElementById('enterGame');
+        let success = document.getElementById('success');
+        
+        tg.expand();
 
-		document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+        document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 
-		buy.addEventListener("click", ()=> {
-			tg.close();
-		});
-	</script>
+        play.addEventListener("click", ()=> {
+            gameOptions.style.display = "block";
+        });
+        
+        createGame.addEventListener("click", ()=> {
+            // Generate game code
+            let gameCode = generateGameCode();
+            
+            // Show the game code
+            gamesForm.style.display = "block";
+            gameCodeInput.value = gameCode;
+            
+            // Hide game options
+            gameOptions.style.display = "none";
+        });
+        
+        enterGame.addEventListener("click", ()=> {
+            // Check if the entered game code is correct
+            let enteredCode = gameCodeInput.value.trim();
+            let generatedCode = localStorage.getItem("gameCode");
+            
+            if (enteredCode === generatedCode) {
+                success.style.display = "block";
+            } else {
+                alert("Неверный код игры");
+            }
+        });
+        
+        function generateGameCode() {
+            // Generate a random 4-digit code
+            let code = Math.floor(1000 + Math.random() * 9000);
+            
+            // Store the code in local storage for later verification
+            localStorage.setItem("gameCode", code.toString());
+            
+            return code.toString();
+        }
+    </script>
 </body>
 </html>
