@@ -75,75 +75,108 @@
 		input:focus {
 			border-color: var(--tg-theme-button-color);
 		}
+
+        /* Added CSS */
+        #game-options {
+            display: none;
+        }
+
+        #game-code {
+            display: none;
+        }
+
+        #success-message {
+            display: none;
+        }
+        
+        #game-options button {
+            margin-top: 20px;
+        }
+        
+        #game-code p {
+            margin-top: 20px;
+        }
+        
+        #success-message p {
+            margin-top: 20px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
 	</style>
 </head>
 <body>
 	<div id="main">
 		<h1>Gartic</h1>
-		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">|
+		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
 		<p>Yx Artem, popa top!</p>
 		<input type="text" placeholder="Ник" id="user_name">
 		<button id="play">Играть</button>
-	</div>
-	
-    <div id="game-options" style="display:none;">
-        <button id="create-game">чсчсСоздать игру</button>
-        <button id="join-game">Зайти в игру</button>
+        
+        <!-- Added game options -->
+        <div id="game-options">
+            <button id="create-game">Создать игру</button>
+            <button id="join-game">Зайти в игру</button>
+        </div>
+        
+        <!-- Added game code and success message -->
+        <div id="game-code">
+            <h1>Код для друга</h1>
+            <p id="code"></p>
+        </div>
+        
+        <div id="success-message">
+            <p>Успешно</p>
+        </div>
+        
     </div>
     
-    <div id="game-code" style="display:none;">
-        <h1>Код для друга</h1>
-        <p id="code"></p>
-    </div>
-
-    <div id="success-message" style="display:none;">
-        <p>Успешно на странице</p>
-    </div>
-
+    <form id="games"></form>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
         let play = document.getElementById('play');
         let createGame = document.getElementById('create-game');
         let joinGame = document.getElementById('join-game');
-        let code = document.getElementById('code');
         let gameOptions = document.getElementById('game-options');
         let gameCode = document.getElementById('game-code');
+        let code = document.getElementById('code');
         let successMessage = document.getElementById('success-message');
-
+        
         tg.expand();
-
+        
         document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 
-        play.addEventListener("click", ()=> {
+        play.addEventListener("click", () => {
+            document.getElementById("main").classList.add("hidden");
             gameOptions.style.display = "block";
         });
-
-        createGame.addEventListener("click", ()=> {
-            // Generate game code
-            let generatedCode = generateGameCode();
-            code.innerText = generatedCode;
-
-            gameOptions.style.display = "none";
+        
+        createGame.addEventListener("click", () => {
+            gameOptions.classList.add("hidden");
             gameCode.style.display = "block";
+            
+            // Generate random code
+            let randomCode = Math.floor(Math.random() * 10000);
+            code.innerHTML = randomCode;
+            
+            // Store the code for later use
+            localStorage.setItem("gameCode", randomCode);
         });
-
-        joinGame.addEventListener("click", ()=> {
-            successMessage.style.display = "block";
-        });
-
-        function generateGameCode() {
-            // Generate a random alphanumeric code
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let codeLength = 6;
-            let generatedCode = '';
-
-            for (let i = 0; i < codeLength; i++) {
-                generatedCode += characters.charAt(Math.floor(Math.random() * characters.length));
+        
+        joinGame.addEventListener("click", () => {
+            let enteredCode = prompt("Введите код игры:");
+            let storedCode = localStorage.getItem("gameCode");
+            
+            if (enteredCode === storedCode) {
+                gameOptions.classList.add("hidden");
+                successMessage.style.display = "block";
+            } else {
+                alert("Неверный код игры!");
             }
-
-            return generatedCode;
-        }
+        });
     </script>
 </body>
 </html>
