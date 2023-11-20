@@ -35,7 +35,7 @@
 
 		img {
 			width: 70px;
-			margin: 10px auto;
+			margin: 30px auto;
 		}
 
 		p {
@@ -53,25 +53,23 @@
 			font-weight: 500;
 			cursor: pointer;
 			transition: all 500ms ease;
-			color: var(--tg-theme-button-text-color);
-			background: var(--tg-theme-button-color);
+			color: var(--tg-theme-secondary-bg-color);
+			background: var(--tg-theme-button-text-color);
 		}
 
 		button:hover {
-  			background: var(--tg-theme-secondary-bg-сolor);
-  			color: transparent;
+			background: var(--tg-theme-secondary-bg-сolor);
 		}
 
 		#form {
 			display: none;
 			text-align: center;
-
 		}
 
 		input {
 			width: 90%;
 			outline: none;
-			margin: 10px 5%;
+			margin: 10px 10px;
 			padding: 15px 10px;
 			font-size: 14px;
 			border: 2px solid silver;
@@ -79,30 +77,29 @@
 		}
 
 		input:focus {
-			border-color: var(--tg-theme-button-color);
+			border-color: #db5d5d;
 		}
 	</style>
 </head>
 <body>
 	<div id="main">
-		<h1>Gartic</h1>
+		<h1>Онлайн Магазин</h1>
 		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">|
-		<p>Yx аааArtem, popa top!</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ipsum magni, molestias</p>
 		<button id="buy">Играть</button>
 	</div>
 	<form id="form">
 		<input type="text" placeholder="Имя" id="user_name">
-		<input type="text" placeholder="Почта" id="user_email">
-		<input type="text" placeholder="Телефон" id="user_phone">
+		<input type="text" placeholder="Email" id="user_email">
+		<input type="text" placeholder="телефон" id="user_phone">
 		<button id="order">Оформить</button>
 	</form>
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
 	<script>
 		let tg = window.Telegram.WebApp;
-		let buy = document.getElementById("buy");
-		Let order = document.getElementById("order");
+		let buy = document.getElementById('buy');
+		let order = document.getElementById('order');
 		tg.expand();
-
 
 		buy.addEventListener("click", ()=> {
 			document.getElementById("main").style.display = "none";
@@ -110,18 +107,18 @@
 			document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 		});
 
-		order.addEventListener("click", ()=> {
+		order.addEventListener("click", () => {
 			let name = document.getElementById("user_name").value;
-			let gmail = document.getElementById("user_email").value;
-			let phome = document.getElementById("user_phone").value;
+			let email = document.getElementById("user_email").value
+			let phone = document.getElementById("user_phone").value
 
 			let data = {
 				name: name,
-				gmail: gmail,
-				phome: phome,
+				email: email,
+				phone: phone,
 			}
-
-			tg.sendData(JSON,stringify(data));
+			tg.sendData(JSON.stringify(data));
+			tg.close();
 		});
 	</script>
 </body>
