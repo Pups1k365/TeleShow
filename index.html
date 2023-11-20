@@ -78,84 +78,67 @@
 
         #new-scene {
             display: none; /* скрыть элемент по умолчанию */
+            text-align: center;
         }
-
-        #canvas {
-            border: 2px solid black; /* добавляем рамку для холста */
-            margin-top: 20px;
-            margin-bottom: 20px;
+        
+        #new-scene h2 {
+            margin-top: 50px;
+            margin-bottom: 10px;
         }
-
-        .toolbar {
-            margin-top: 20px;
+        
+        #new-scene p {
+            width: 350px;
+            margin: 0 auto;
         }
-
-        .toolbar button {
-            margin-right: 10px;
+        
+        #new-scene button {
+            margin-top: 50px;
         }
+        
 	</style>
 </head>
 <body>
     <div id="main">
-        <h1>Shop</h1>
-        <img src="shop-icon.png" alt="Shop Icon">
-        <p>Добро пожаловать в наш магазин!</p>
-        <button id="back-btn">Назад</button>
-        <div id="canvas"></div>
-        <div class="toolbar">
-            <button id="pencil-btn">Карандаш</button>
-            <button id="eraser-btn">Стирачка</button>
-        </div>
+        <h1>Gartic</h1>
+        <img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
+        <p>Test</p>
+        <button id="buy">Играть</button>
+    </div>
+    
+    <form id="form">
+        <input type="text" placeholder="Ник" id="user_name">
+        <input type="text" placeholder="Почта" id="user_email">
+        <input type="text" placeholder="телефон" id="user_phone">
+        <button id="order">Подтвердить</button>
     </div>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        const canvas = document.getElementById('canvas');
-        const context = canvas.getContext('2d');
-        let isDrawing = false;
+        let tg = window.Telegram.WebApp;
+        let buy = document.getElementById('buy');
+        let order = document.getElementById('order');
+        tg.expand();
 
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseleave', stopDrawing);
 
-        function startDrawing(event) {
-            isDrawing = true;
-            draw(event);
-        }
+        buy.addEventListener("click", ()=> {
+            document.getElementById("main").style.display = "none";
+            document.getElementById("form").style.display = "block";
+            document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+        });
 
-        function draw(event) {
-            if (!isDrawing) return;
+        order.addEventListener("click", ()=> {
+        	let name = document.getElementById("user_name").value;
+        	let email = document.getElementById("user_email").value;
+        	let phone = document.getElementById("user_phone").value;
 
-            const x = event.pageX - canvas.offsetLeft;
-            const y = event.pageY - canvas.offsetTop;
-
-            context.fillRect(x, y, 2, 2); // Используем fillRect для рисования точки
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-        }
-
-        const backBtn = document.getElementById('back-btn');
-        backBtn.addEventListener('click', goBack);
-
-        function goBack() {
-            window.history.back();
-        }
-
-        const pencilBtn = document.getElementById('pencil-btn');
-        pencilBtn.addEventListener('click', usePencil);
-
-        function usePencil() {
-            context.fillStyle = 'black'; // Устанавливаем цвет карандаша
-        }
-
-        const eraserBtn = document.getElementById('eraser-btn');
-        eraserBtn.addEventListener('click', useEraser);
-
-        function useEraser() {
-            context.clearRect(0, 0, canvas.width, canvas.height); // Очищаем холст
-        }
+        	let Data = {
+        		name: name,
+        		email: email,
+        		phone: phone,
+        	}
+        	tg.sendData(JSON.stringify(data));
+           	tg.close();
+        });
     </script>
 </body>
 </html>
