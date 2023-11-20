@@ -75,31 +75,64 @@
 		input:focus {
 			border-color: var(--tg-theme-button-color);
 		}
+
+        #new-scene {
+            display: none; /* скрыть элемент по умолчанию */
+            text-align: center;
+        }
+        
+        #new-scene h2 {
+            margin-top: 50px;
+            margin-bottom: 10px;
+        }
+        
+        #new-scene p {
+            width: 350px;
+            margin: 0 auto;
+        }
+        
+        #new-scene button {
+            margin-top: 50px;
+        }
+        
 	</style>
 </head>
 <body>
-	<div id="main">
-		<h1>Gartic</h1>
-		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">|
-		<p>Yx Artem, popa top!</p>
-		<input type="text" placeholder="Ник" id="user_name">
-		<button id="buy">Играть</button>
-	</div>
-	<form id="games">
-		<h1>Код для друга</h1>
+    <div id="main">
+        <h1>Gartic</h1>
+        <img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
+        <p>Yx Artem, popa top!</p>
+        <input type="text" placeholder="Ник" id="user_name">
+        <button id="buy">Играть</button>
+    </div>
+    
+    <div id="new-scene">
+        <h2>Привет, <span id="user-greeting"></span></h2>
+        <button id="back">Назад</button>
+    </div>
 
-	</form>
-	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	<script>
-		let tg = window.Telegram.WebApp;
-		let buy = document.getElementById('buy');
-		tg.expand();
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let tg = window.Telegram.WebApp;
+        let buy = document.getElementById('buy');
+        let mainScene = document.getElementById('main');
+        let newScene = document.getElementById('new-scene');
+        let back = document.getElementById('back');
+        let userGreeting = document.getElementById('user-greeting');
+        tg.expand();
 
-		document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+        document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 
-		buy.addEventListener("click", ()=> {
-			tg.close();
-		});
-	</script>
+        buy.addEventListener("click", ()=> {
+            mainScene.style.display = "none"; // скрыть старую сцену
+            newScene.style.display = "block"; // показать новую сцену
+            userGreeting.textContent = document.getElementById("user_name").value; // установить имя пользователя в тексте приветствия
+        });
+
+        back.addEventListener("click", ()=> {
+            mainScene.style.display = "block"; // показать старую сцену
+            newScene.style.display = "none"; // скрыть новую сцену
+        });
+    </script>
 </body>
 </html>
