@@ -78,125 +78,84 @@
 
         #new-scene {
             display: none; /* скрыть элемент по умолчанию */
-            text-align: center;
         }
-        
-        #new-scene h2 {
-            margin-top: 50px;
-            margin-bottom: 10px;
+
+        #canvas {
+            border: 2px solid black; /* добавляем рамку для холста */
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        
-        #new-scene p {
-            width: 350px;
-            margin: 0 auto;
-        }
-        
-        #new-scene button {
-            margin-top: 50px;
-        }
-        
-        #drawing-canvas {
-            border: 2px solid silver;
+
+        .toolbar {
             margin-top: 20px;
         }
-        
-        #drawing-toolbar button {
-            border-radius:5px;
-            margin-top: 10px;
-            height: 40px;
-            width: 80px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 500ms ease;
-            color: var(--tg-theme-button-text-color);
-            background: var(--tg-theme-button-color);
+
+        .toolbar button {
+            margin-right: 10px;
         }
-        
-        #drawing-toolbar button:hover {
-  			background: var(--tg-theme-secondary-bg-сolor);
-  			color: transparent;
-		}
-        
-    </style>
+	</style>
 </head>
 <body>
     <div id="main">
-        <h1>Gartic</h1>
-        <img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
-        <p>Test</p>
-        <input type="text" placeholder="Ник" id="user_name">
-        <button id="buy">Играть</button>
-    </div>
-    
-    <div id="new-scene">
-        <canvas id="drawing-canvas" width="400" height="400"></canvas>
-        <div id="drawing-toolbar">
-            <button id="black-pencil">Черный карандаш</button>
-            <button id="back">Назад</button>
+        <h1>Shop</h1>
+        <img src="shop-icon.png" alt="Shop Icon">
+        <p>Добро пожаловать в наш магазин!</p>
+        <button id="back-btn">Назад</button>
+        <div id="canvas"></div>
+        <div class="toolbar">
+            <button id="pencil-btn">Карандаш</button>
+            <button id="eraser-btn">Стирачка</button>
         </div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        let tg = window.Telegram.WebApp;
-        let buy = document.getElementById('buy');
-        let mainScene = document.getElementById('main');
-        let newScene = document.getElementById('new-scene');
-        let back = document.getElementById('back');
-        let blackPencil = document.getElementById('black-pencil');
-        let userGreeting = document.getElementById('user-greeting');
-        let canvas = document.getElementById('drawing-canvas');
-        let ctx = canvas.getContext('2d');
-        tg.expand();
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        let isDrawing = false;
 
-        document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
 
-        buy.addEventListener("click", ()=> {
-            mainScene.style.display = "none"; // скрыть старую сцену
-            newScene.style.display = "block"; // показать новую сцену
-            userGreeting.textContent = document.getElementById("user_name").value; // установить имя пользователя в тексте приветствия
-        });
+        function startDrawing(event) {
+            isDrawing = true;
+            draw(event);
+        }
 
-        back.addEventListener("click", ()=> {
-            mainScene.style.display = "block"; // показать старую сцену
-            newScene.style.display = "none"; // скрыть новую сцену
-        });
-        
-        blackPencil.addEventListener("click", ()=> {
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
-            ctx.lineCap = "round";
-            
-            let isDrawing = false; // флаг рисования
-            
-            canvas.addEventListener('mousedown', function(e) {
-                let x = e.offsetX; // координата x
-                let y = e.offsetY; // координата y
-                isDrawing = true; // начало рисования
-                
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-            });
-            
-            canvas.addEventListener('mousemove', function(e) {
-                if (isDrawing) {
-                    let x = e.offsetX; // координата x
-                    let y = e.offsetY; // координата y
-                    
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-                }
-            });
-            
-            canvas.addEventListener('mouseup', function(e) {
-                isDrawing = false; // конец рисования
-            });
-            
-            canvas.addEventListener('mouseleave', function(e) {
-                isDrawing = false; // конец рисования
-            });
-        });
+        function draw(event) {
+            if (!isDrawing) return;
+
+            const x = event.pageX - canvas.offsetLeft;
+            const y = event.pageY - canvas.offsetTop;
+
+            context.fillRect(x, y, 2, 2); // Используем fillRect для рисования точки
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        const backBtn = document.getElementById('back-btn');
+        backBtn.addEventListener('click', goBack);
+
+        function goBack() {
+            window.history.back();
+        }
+
+        const pencilBtn = document.getElementById('pencil-btn');
+        pencilBtn.addEventListener('click', usePencil);
+
+        function usePencil() {
+            context.fillStyle = 'black'; // Устанавливаем цвет карандаша
+        }
+
+        const eraserBtn = document.getElementById('eraser-btn');
+        eraserBtn.addEventListener('click', useEraser);
+
+        function useEraser() {
+            context.clearRect(0, 0, canvas.width, canvas.height); // Очищаем холст
+        }
     </script>
 </body>
 </html>
