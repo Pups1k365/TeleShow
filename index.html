@@ -127,11 +127,6 @@
             mainScene.style.display = "none"; // скрыть старую сцену
             newScene.style.display = "block"; // показать новую сцену
             userGreeting.textContent = document.getElementById("user_name").value; // установить имя пользователя в тексте приветствия
-            let data = {
-            	name: userGreeting,
-            }
-
-            tg.sendData(JSON.stringify(data));
         });
 
         back.addEventListener("click", ()=> {
