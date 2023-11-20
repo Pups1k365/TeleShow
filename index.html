@@ -95,7 +95,30 @@
             margin-top: 50px;
         }
         
-	</style>
+        #drawing-canvas {
+            border: 2px solid silver;
+            margin-top: 20px;
+        }
+        
+        #drawing-toolbar button {
+            border-radius:5px;
+            margin-top: 10px;
+            height: 40px;
+            width: 80px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 500ms ease;
+            color: var(--tg-theme-button-text-color);
+            background: var(--tg-theme-button-color);
+        }
+        
+        #drawing-toolbar button:hover {
+  			background: var(--tg-theme-secondary-bg-сolor);
+  			color: transparent;
+		}
+        
+    </style>
 </head>
 <body>
     <div id="main">
@@ -107,8 +130,11 @@
     </div>
     
     <div id="new-scene">
-        <h2>Привет, <span id="user-greeting"></span></h2>
-        <button id="back">Назад</button>
+        <canvas id="drawing-canvas" width="400" height="400"></canvas>
+        <div id="drawing-toolbar">
+            <button id="black-pencil">Черный карандаш</button>
+            <button id="back">Назад</button>
+        </div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -118,7 +144,10 @@
         let mainScene = document.getElementById('main');
         let newScene = document.getElementById('new-scene');
         let back = document.getElementById('back');
+        let blackPencil = document.getElementById('black-pencil');
         let userGreeting = document.getElementById('user-greeting');
+        let canvas = document.getElementById('drawing-canvas');
+        let ctx = canvas.getContext('2d');
         tg.expand();
 
         document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
@@ -132,6 +161,41 @@
         back.addEventListener("click", ()=> {
             mainScene.style.display = "block"; // показать старую сцену
             newScene.style.display = "none"; // скрыть новую сцену
+        });
+        
+        blackPencil.addEventListener("click", ()=> {
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.lineCap = "round";
+            
+            let isDrawing = false; // флаг рисования
+            
+            canvas.addEventListener('mousedown', function(e) {
+                let x = e.offsetX; // координата x
+                let y = e.offsetY; // координата y
+                isDrawing = true; // начало рисования
+                
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            });
+            
+            canvas.addEventListener('mousemove', function(e) {
+                if (isDrawing) {
+                    let x = e.offsetX; // координата x
+                    let y = e.offsetY; // координата y
+                    
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+            });
+            
+            canvas.addEventListener('mouseup', function(e) {
+                isDrawing = false; // конец рисования
+            });
+            
+            canvas.addEventListener('mouseleave', function(e) {
+                isDrawing = false; // конец рисования
+            });
         });
     </script>
 </body>
