@@ -53,12 +53,13 @@
 			font-weight: 500;
 			cursor: pointer;
 			transition: all 500ms ease;
-			color: var(--tg-theme-secondary-bg-color);
-			background: var(--tg-theme-button-text-color);
+			color: var(--tg-theme-button-text-color);
+			background: var(--tg-theme-button-color);
 		}
 
 		button:hover {
-			background: var(--tg-theme-secondary-bg-сolor);
+  			background: var(--tg-theme-secondary-bg-сolor);
+  			color: transparent;
 		}
 
 		#form {
@@ -77,7 +78,7 @@
 		}
 
 		input:focus {
-			border-color: #db5d5d;
+			border-color: var(--tg-theme-button-color);
 		}
 	</style>
 </head>
