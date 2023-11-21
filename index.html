@@ -84,39 +84,50 @@
 </head>
 <body>
 	<div id="main">
-		<h1>Онлайн Магазин</h1>
-		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">|
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ipsum magni, molestias</p>
+		<h1>Gartic</h1>
+		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
+		<input type="text" placeholder="Имя" id="user_name">
+		<p>Adolf</p>
 		<button id="buy">Играть</button>
 	</div>
 	<form id="form">
-		<input type="text" placeholder="Имя" id="user_name">
-		<input type="text" placeholder="Email" id="user_email">
-		<input type="text" placeholder="телефон" id="user_phone">
-		<button id="order">Оформить</button>
+		<h2>Main</h2>
+		<p>xyu</p>
+		<button id="create_game">Создать игру</button>
+		<button id="join_game">Зайти в игру</button>
 	</form>
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
 	<script>
 		let tg = window.Telegram.WebApp;
 		let buy = document.getElementById('buy');
-		let order = document.getElementById('order');
+		let createGame = document.getElementById('create_game');
+		let joinGame = document.getElementById('join_game');
 		tg.expand();
 
-		buy.addEventListener("click", ()=> {
+		document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
+		
+		buy.addEventListener("click", () => {
 			document.getElementById("main").style.display = "none";
 			document.getElementById("form").style.display = "block";
-			document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
 		});
 
-		order.addEventListener("click", () => {
+		createGame.addEventListener("click", () => {
 			let name = document.getElementById("user_name").value;
-			let email = document.getElementById("user_email").value
-			let phone = document.getElementById("user_phone").value
 
 			let data = {
-				name: name,
-				email: email,
-				phone: phone,
+				action: "create_game",
+				name: name
+			}
+			tg.sendData(JSON.stringify(data));
+			tg.close();
+		});
+
+		joinGame.addEventListener("click", () => {
+			let code = prompt("Введите код игры:");
+
+			let data = {
+				action: "join_game",
+				code: code
 			}
 			tg.sendData(JSON.stringify(data));
 			tg.close();
