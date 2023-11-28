@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Лабиринт</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: black;
-    }
-  </style>
-</head>
-<body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>3D Лабиринт</title>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      canvas { display: block; }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script>
+      // Создаем сцену
+      var scene = new THREE.Scene();
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({color: 0xffffff});
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+      // Создаем камеру
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
 
-    camera.position.z = 5;
+      // Создаем рендерер
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 
-    function animate() {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    }
-    animate();
-  </script>
-</body>
+      // Создаем геометрию и материал для стен лабиринта
+      var geometry = new THREE.BoxGeometry(1, 1, 1);
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+      // Создаем стены лабиринта
+      var walls = [];
+      for (var i = 0; i < 10; i++) {
+        walls[i] = new THREE.Mesh(geometry, material);
+        walls[i].position.x = Math.random() * 10 - 5;
+        walls[i].position.y = Math.random() * 10 - 5;
+        scene.add(walls[i]);
+      }
+
+      // Основной цикл анимации
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Вращаем стены лабиринта
+        walls.forEach(function (wall) {
+          wall.rotation.x += 0.01;
+          wall.rotation.y += 0.01;
+        });
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
 </html>
