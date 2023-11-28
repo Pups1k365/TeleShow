@@ -5,7 +5,6 @@
     <title>3D Лабиринт</title>
     <style>
       body { margin: 0; overflow: hidden; }
-      canvas { cursor: none; }
     </style>
   </head>
   <body>
@@ -45,50 +44,57 @@
         scene.add(walls[i]);
       }
 
-      // Функция анимации и управления
+      // Переменные для управления мышью
+      var mouse = new THREE.Vector2();
+      var prevMouse = new THREE.Vector2();
+      var isMouseDown = false;
+
+      // Обработчик движения мыши
+      function handleMouseMove(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      }
+
+      // Обработчик нажатия кнопки мыши
+      function handleMouseDown() {
+        isMouseDown = true;
+      }
+
+      // Обработчик отпускания кнопки мыши
+      function handleMouseUp() {
+        isMouseDown = false;
+      }
+
+      // Обработчик изменения размера окна
+      function handleWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      // Добавляем обработчики событий мыши
+      document.addEventListener("mousemove", handleMouseMove, false);
+      document.addEventListener("mousedown", handleMouseDown, false);
+      document.addEventListener("mouseup", handleMouseUp, false);
+      window.addEventListener("resize", handleWindowResize, false);
+
+      // Функция анимации и управления мышью
       function animate() {
         requestAnimationFrame(animate);
 
-        // Получение координат мыши
-        var mouseX = event.clientX - window.innerWidth / 2;
-        var mouseY = event.clientY - window.innerHeight / 2;
+        // Поворот камеры при движении мыши влево или вправо
+        if (isMouseDown) {
+          var rotationSpeed = 0.01;
+          camera.rotation.y -= (mouse.x - prevMouse.x) * rotationSpeed;
+        }
 
-        // Вращение камеры в соответствии с перемещением мыши
-        camera.rotation.y = mouseX * 0.005;
-        camera.rotation.x = mouseY * 0.005;
-
-        // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["87"]) { // W
-          camera.position.x -= Math.sin(camera.rotation.y) * moveSpeed;
-          camera.position.z -= Math.cos(camera.rotation.y) * moveSpeed;
-        }
-        if (keyboard["83"]) { // S
-          camera.position.x += Math.sin(camera.rotation.y) * moveSpeed;
-          camera.position.z += Math.cos(camera.rotation.y) * moveSpeed;
-        }
-        if (keyboard["65"]) { // A
-          camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2) * moveSpeed;
-          camera.position.z += Math.cos(camera.rotation.y + Math.PI / 2) * moveSpeed;
-        }
-        if (keyboard["68"]) { // D
-          camera.position.x -= Math.sin(camera.rotation.y + Math.PI / 2) * moveSpeed;
-          camera.position.z -= Math.cos(camera.rotation.y + Math.PI / 2) * moveSpeed;
-        }
+        // Закрепление мыши в центре экрана
+        prevMouse.x = mouse.x;
+        prevMouse.y = mouse.y;
 
         renderer.render(scene, camera);
       }
 
-      // Обработка нажатия клавиш
-      var keyboard = {};
-      document.addEventListener('keydown', function(event) {
-        keyboard[event.keyCode] = true;
-      });
-      document.addEventListener('keyup', function(event) {
-        keyboard[event.keyCode] = false;
-      });
-
-      // Запуск анимации
-      var moveSpeed = 0.1;
       animate();
     </script>
   </body>
