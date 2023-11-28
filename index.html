@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-    body {
-        background-color: black;
+  <head>
+    <meta charset="UTF-8" />
+    <title>3D Лабиринт</title>
+    <style>
+      body {
         margin: 0;
-        padding: 0;
         overflow: hidden;
-    }
-    
-    #maze {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-    }
-    
-    .wall {
-        position: absolute;
-        background-color: white;
-        width: 20px;
-        height: 20px;
-    }
-    
-    #player {
-        position: absolute;
-        background-color: red;
-        width: 20px;
-        height: 20px;
-    }
-</style>
-</head>
-<body>
-<div id="maze"></div>
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script>
+      // Создаем сцену
+      var scene = new THREE.Scene();
 
-<script>
-    const maze = document.getElementById('maze');
-    const player = document.createElement('div');
-    player.id = 'player';
-    maze.appendChild(player);
-    
-    document.addEventListener('keydown', function(event) {
-        const key = event.key.toLowerCase();
-        
-        if (key === 'w') {
-            player.style.top = parseInt(player.style.top) - 20 + 'px';
-        } else if (key === 'a') {
-            player.style.left = parseInt(player.style.left) - 20 + 'px';
-        } else if (key === 's') {
-            player.style.top = parseInt(player.style.top) + 20 + 'px';
-        } else if (key === 'd') {
-            player.style.left = parseInt(player.style.left) + 20 + 'px';
+      // Создаем камеру
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      // Создаем рендерер
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Создаем геометрию для стен
+      var geometry = new THREE.BoxGeometry(1, 1, 1);
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+      // Создаем лабиринт
+      var maze = [
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1]
+      ];
+
+      for (var i = 0; i < maze.length; i++) {
+        for (var j = 0; j < maze[i].length; j++) {
+          if (maze[i][j] === 1) {
+            var cube = new THREE.Mesh(geometry, material);
+            cube.position.x = j - Math.floor(maze[i].length / 2);
+            cube.position.y = -i + Math.floor(maze.length / 2);
+            scene.add(cube);
+          }
         }
-    });
-</script>
-</body>
+      }
+
+      // Обновляем сцену
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
 </html>
