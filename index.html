@@ -9,7 +9,6 @@
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/controls/OrbitControls.min.js"></script>
     <script>
       // Создаем сцену
       var scene = new THREE.Scene();
@@ -45,9 +44,6 @@
         scene.add(walls[i]);
       }
 
-      // Добавляем контроллеры вращения
-      var controls = new THREE.OrbitControls(camera, renderer.domElement);
-
       // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
@@ -65,9 +61,6 @@
         if (keyboard["D"]) {
           camera.position.x += 0.1;
         }
-
-        // Обновление контроллеров вращения
-        controls.update();
 
         // Обновление рендерера
         renderer.render(scene, camera);
