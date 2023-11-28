@@ -66,19 +66,19 @@
         requestAnimationFrame(animate);
         updateCamera();
         // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["87"]) { // W
+        if (keyboard["w"]) { // W
           camera.position.x -= Math.sin(camera.rotation.y) * 0.1;
           camera.position.z -= Math.cos(camera.rotation.y) * 0.1;
         }
-        if (keyboard["65"]) { // A
+        if (keyboard["a"]) { // A
           camera.position.x -= Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
           camera.position.z -= Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
         }
-        if (keyboard["83"]) { // S
+        if (keyboard["s"]) { // S
           camera.position.x += Math.sin(camera.rotation.y) * 0.1;
           camera.position.z += Math.cos(camera.rotation.y) * 0.1;
         }
-        if (keyboard["68"]) { // D
+        if (keyboard["d"]) { // D
           camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
           camera.position.z += Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
         }
