@@ -5,6 +5,7 @@
     <title>3D Лабиринт</title>
     <style>
       body { margin: 0; overflow: hidden; }
+      canvas { display: block; margin: auto; }
     </style>
   </head>
   <body>
@@ -44,65 +45,29 @@
         scene.add(walls[i]);
       }
 
+      // Mouse control
+      var mouse = new THREE.Vector2();
+
+      function onMouseMove(event) {
+        // Calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      }
+
+      document.addEventListener('mousemove', onMouseMove, false);
+
+      function updateCamera() {
+        camera.position.x += mouse.x;
+        camera.lookAt( scene.position );
+      }
+
       // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
-
-        // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["w"]) {
-          // Проверка на столкновение со стеной перед камерой
-          var nextPosition = camera.position.clone();
-          nextPosition.z -= 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.z -= 0.1;
-          }
-        }
-        if (keyboard["a"]) {
-          // Проверка на столкновение со стеной слева от камеры
-          var nextPosition = camera.position.clone();
-          nextPosition.x -= 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.x -= 0.1;
-          }
-        }
-        if (keyboard["s"]) {
-          // Проверка на столкновение со стеной за камерой
-          var nextPosition = camera.position.clone();
-          nextPosition.z += 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.z += 0.1;
-          }
-        }
-        if (keyboard["d"]) {
-          // Проверка на столкновение со стеной справа от камеры
-          var nextPosition = camera.position.clone();
-          nextPosition.x += 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.x += 0.1;
-          }
-        }
-
+        updateCamera();
         renderer.render(scene, camera);
       }
-
-      // Функция проверки столкновения с блоками
-      function checkCollision(position) {
-        for (var i = 0; i < walls.length; i++) {
-          if (position.distanceTo(walls[i].position) < 1) {
-            return true; // Столкновение обнаружено
-          }
-        }
-        return false; // Столкновение не обнаружено
-      }
-
-      // Обработчик нажатия клавиш
-      var keyboard = {};
-      document.addEventListener("keydown", function(event) {
-        keyboard[event.key] = true;
-      });
-      document.addEventListener("keyup", function(event) {
-        keyboard[event.key] = false;
-      });
 
       animate();
     </script>
