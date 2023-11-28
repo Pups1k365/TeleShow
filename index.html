@@ -44,26 +44,44 @@
         scene.add(walls[i]);
       }
 
-      // Добавляем обработчики событий для движения мыши
-      var mouseDown = false;
-      var mouseX = 0;
+      // Создаем контейнер для кнопок управления
+      var controlsContainer = document.createElement('div');
+      controlsContainer.style.position = 'fixed';
+      controlsContainer.style.bottom = '20px';
+      controlsContainer.style.left = '20px';
+      document.body.appendChild(controlsContainer);
 
-      document.addEventListener('mousedown', function(event) {
-        mouseDown = true;
-        mouseX = event.clientX;
+      // Создаем кнопки управления
+      var leftButton = document.createElement('button');
+      leftButton.innerHTML = '←';
+      controlsContainer.appendChild(leftButton);
+
+      var rightButton = document.createElement('button');
+      rightButton.innerHTML = '→';
+      controlsContainer.appendChild(rightButton);
+
+      // Обработчики событий для кнопок управления
+      leftButton.addEventListener('mousedown', function() {
+        rotateCamera(-0.1); // Поворот камеры влево
       });
 
-      document.addEventListener('mouseup', function() {
-        mouseDown = false;
+      rightButton.addEventListener('mousedown', function() {
+        rotateCamera(0.1); // Поворот камеры вправо
       });
 
+      // Обработчик события перемещения мыши
       document.addEventListener('mousemove', function(event) {
-        if (mouseDown) {
-          var movementX = event.clientX - mouseX;
-          mouseX = event.clientX;
-          camera.position.x += movementX * 0.01;
-        }
+        var mouseX = event.clientX; // Координата X мыши
+        var windowWidth = window.innerWidth; // Ширина окна
+
+        var mousePositionNormalized = (mouseX - windowWidth / 2) / (windowWidth / 2);
+        rotateCamera(mousePositionNormalized * 0.1); // Поворот камеры в зависимости от положения мыши
       });
+
+      // Функция поворота камеры
+      function rotateCamera(angle) {
+        camera.rotation.y += angle;
+      }
 
       // Функция анимации и управления
       function animate() {
@@ -71,15 +89,19 @@
 
         // Движение камеры при нажатии клавиш W, A, S или D
         if (keyboard["W"]) {
+          // Движение вперед
           camera.position.z -= 0.1;
         }
         if (keyboard["A"]) {
+          // Движение влево
           camera.position.x -= 0.1;
         }
         if (keyboard["S"]) {
+          // Движение назад
           camera.position.z += 0.1;
         }
         if (keyboard["D"]) {
+          // Движение вправо
           camera.position.x += 0.1;
         }
 
