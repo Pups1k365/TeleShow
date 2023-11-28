@@ -15,7 +15,7 @@
 
       // Создаем камеру
       var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 5);
+      camera.position.z = 5;
 
       // Создаем рендерер
       var renderer = new THREE.WebGLRenderer();
@@ -49,21 +49,60 @@
         requestAnimationFrame(animate);
 
         // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["W"]) {
-          camera.position.z -= 0.1;
+        if (keyboard["w"]) {
+          // Проверка на столкновение со стеной перед камерой
+          var nextPosition = camera.position.clone();
+          nextPosition.z -= 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.z -= 0.1;
+          }
         }
-        if (keyboard["A"]) {
-          camera.position.x -= 0.1;
+        if (keyboard["a"]) {
+          // Проверка на столкновение со стеной слева от камеры
+          var nextPosition = camera.position.clone();
+          nextPosition.x -= 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.x -= 0.1;
+          }
         }
-        if (keyboard["S"]) {
-          camera.position.z += 0.1;
+        if (keyboard["s"]) {
+          // Проверка на столкновение со стеной за камерой
+          var nextPosition = camera.position.clone();
+          nextPosition.z += 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.z += 0.1;
+          }
         }
-        if (keyboard["D"]) {
-          camera.position.x += 0.1;
+        if (keyboard["d"]) {
+          // Проверка на столкновение со стеной справа от камеры
+          var nextPosition = camera.position.clone();
+          nextPosition.x += 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.x += 0.1;
+          }
         }
 
         renderer.render(scene, camera);
       }
+
+      // Функция проверки столкновения с блоками
+      function checkCollision(position) {
+        for (var i = 0; i < walls.length; i++) {
+          if (position.distanceTo(walls[i].position) < 1) {
+            return true; // Столкновение обнаружено
+          }
+        }
+        return false; // Столкновение не обнаружено
+      }
+
+      // Обработчик нажатия клавиш
+      var keyboard = {};
+      document.addEventListener("keydown", function(event) {
+        keyboard[event.key] = true;
+      });
+      document.addEventListener("keyup", function(event) {
+        keyboard[event.key] = false;
+      });
 
       animate();
     </script>
