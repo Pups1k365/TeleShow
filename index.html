@@ -44,56 +44,55 @@
         scene.add(walls[i]);
       }
 
-      // Переменные для управления мышью
+      // Добавляем управление камерой мышью
       var mouse = new THREE.Vector2();
-      var prevMouse = new THREE.Vector2();
-      var isMouseDown = false;
+      var center = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
+      var angle = new THREE.Vector2();
 
-      // Обработчик движения мыши
-      function handleMouseMove(event) {
+      document.addEventListener('mousemove', function(event) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      function updateCamera() {
+        angle.subVectors(mouse, center).multiplyScalar(0.001);
+        camera.rotation.y -= angle.x;
+        camera.rotation.x -= angle.y;
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
       }
 
-      // Обработчик нажатия кнопки мыши
-      function handleMouseDown() {
-        isMouseDown = true;
-      }
-
-      // Обработчик отпускания кнопки мыши
-      function handleMouseUp() {
-        isMouseDown = false;
-      }
-
-      // Обработчик изменения размера окна
-      function handleWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      }
-
-      // Добавляем обработчики событий мыши
-      document.addEventListener("mousemove", handleMouseMove, false);
-      document.addEventListener("mousedown", handleMouseDown, false);
-      document.addEventListener("mouseup", handleMouseUp, false);
-      window.addEventListener("resize", handleWindowResize, false);
-
-      // Функция анимации и управления мышью
+      // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
-
-        // Поворот камеры при движении мыши влево или вправо
-        if (isMouseDown) {
-          var rotationSpeed = 0.01;
-          camera.rotation.y -= (mouse.x - prevMouse.x) * rotationSpeed;
+        updateCamera();
+        // Движение камеры при нажатии клавиш W, A, S или D
+        if (keyboard["87"]) { // W
+          camera.position.x -= Math.sin(camera.rotation.y) * 0.1;
+          camera.position.z -= Math.cos(camera.rotation.y) * 0.1;
         }
-
-        // Закрепление мыши в центре экрана
-        prevMouse.x = mouse.x;
-        prevMouse.y = mouse.y;
-
+        if (keyboard["65"]) { // A
+          camera.position.x -= Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
+          camera.position.z -= Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
+        }
+        if (keyboard["83"]) { // S
+          camera.position.x += Math.sin(camera.rotation.y) * 0.1;
+          camera.position.z += Math.cos(camera.rotation.y) * 0.1;
+        }
+        if (keyboard["68"]) { // D
+          camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
+          camera.position.z += Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
+        }
         renderer.render(scene, camera);
       }
+
+      // Обработчик событий клавиатуры
+      var keyboard = {};
+      document.addEventListener('keydown', function(event) {
+        keyboard[event.keyCode] = true;
+      });
+      document.addEventListener('keyup', function(event) {
+        keyboard[event.keyCode] = false;
+      });
 
       animate();
     </script>
