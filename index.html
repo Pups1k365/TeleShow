@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>3D Лабиринт</title>
     <style>
       body { margin: 0; overflow: hidden; }
-      canvas { display: block; }
     </style>
   </head>
   <body>
@@ -23,32 +22,60 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
-      // Создаем геометрию и материал для стен лабиринта
-      var geometry = new THREE.BoxGeometry(1, 1, 1);
-      var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      // Создаем геометрию и материал для стен
+      var wallGeometry = new THREE.BoxGeometry(1, 1, 1);
+      var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-      // Создаем стены лабиринта
+      // Создаем стены
       var walls = [];
-      for (var i = 0; i < 10; i++) {
-        walls[i] = new THREE.Mesh(geometry, material);
-        walls[i].position.x = Math.random() * 10 - 5;
-        walls[i].position.y = Math.random() * 10 - 5;
+      walls.push(new THREE.Mesh(wallGeometry, wallMaterial));
+      walls.push(new THREE.Mesh(wallGeometry, wallMaterial));
+      walls.push(new THREE.Mesh(wallGeometry, wallMaterial));
+      walls.push(new THREE.Mesh(wallGeometry, wallMaterial));
+
+      // Позиционируем стены
+      walls[0].position.set(0, 0, -2);
+      walls[1].position.set(0, 0, 2);
+      walls[2].position.set(-2, 0, 0);
+      walls[3].position.set(2, 0, 0);
+
+      // Добавляем стены на сцену
+      for (var i = 0; i < walls.length; i++) {
         scene.add(walls[i]);
       }
 
-      // Основной цикл анимации
+      // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
 
-        // Вращаем стены лабиринта
-        walls.forEach(function (wall) {
-          wall.rotation.x += 0.01;
-          wall.rotation.y += 0.01;
-        });
+        // Движение камеры при нажатии клавиш W, A, S или D
+        if (keyboard["W"]) {
+          camera.position.z -= 0.1;
+        }
+        if (keyboard["A"]) {
+          camera.position.x -= 0.1;
+        }
+        if (keyboard["S"]) {
+          camera.position.z += 0.1;
+        }
+        if (keyboard["D"]) {
+          camera.position.x += 0.1;
+        }
 
+        // Обновление рендерера
         renderer.render(scene, camera);
       }
 
+      // Обработчик клавиш
+      var keyboard = {};
+      document.addEventListener("keydown", function(event) {
+        keyboard[event.key] = true;
+      });
+      document.addEventListener("keyup", function(event) {
+        keyboard[event.key] = false;
+      });
+
+      // Запуск анимации
       animate();
     </script>
   </body>
