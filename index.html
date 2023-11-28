@@ -1,127 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport"
-		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie-edge">
-	<title>Shop</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
-
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-
-		body {
-			font-family: 'Agbalumo', sans-serif;
-			font-weight: 200;
-			color: var(--tg-theme-text-color);
-			background: var(--tg-theme-bg-color);
-		}
-
-		#main {
-			width: 100%;
-			padding: 20px;
-			text-align: center;
-		}
-
-		h1 {
-			margin-top: 50px;
-			margin-bottom: 10px;
-		}
-
-		img {
-			width: 70px;
-			margin: 30px auto;
-		}
-
-		p {
-			width: 350px;
-			margin: 0 auto;
-		}
-
-		button {
-			border: 0;
-			border-radius:5px;
-			margin-top: 50px;
-			height: 60px;
-			width: 200px;
-			font-size: 20px;
-			font-weight: 500;
-			cursor: pointer;
-			transition: all 500ms ease;
-			color: var(--tg-theme-button-text-color);
-			background: var(--tg-theme-button-color);
-		}
-
-		button:hover {
-			background: var(--tg-theme-secondary-bg-сolor);
-			color: transparent;
-		}
-
-		#form {
-			display: none;
-			text-align: center;
-		}
-
-		input {
-			width: 90%;
-			outline: none;
-			margin: 10px 10px;
-			padding: 15px 10px;
-			font-size: 14px;
-			border: 2px solid silver;
-			border-radius: 5px;
-		}
-
-		input:focus {
-			border-color: var(--tg-theme-button-color);
-		}
-	</style>
+    <title>Лабиринт</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        #player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+        }
+        
+        .wall {
+            position: absolute;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
-	<div id="main">
-		<h1>Онлайн Магазин</h1>
-		<img src="https://muzyet.net/images/cover/bemax/bemax-sigma.jpg">
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ipsum magni, molestias</p>
-		<button id="buy">Играть</button>
-	</div>
-	<form id="form">
-		<input type="text" placeholder="Имя" id="user_name">
-		<input type="text" placeholder="Email" id="user_email">
-		<input type="text" placeholder="телефон" id="user_phone">
-		<button id="order">Оформить</button>
-	</form>
-	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	<script>
-		let tg = window.Telegram.WebApp;
-		let buy = document.getElementById('buy');
-		let order = document.getElementById('order');
-
-		buy.addEventListener("click", ()=> {
-			document.getElementById("main").style.display = "none";
-			document.getElementById("form").style.display = "block";
-			document.getElementById("user_name").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.last_name;
-			document.getElementById("user_email").value = tg.initDataUnsafe.user.first_name + " " + tg.initDataUnsafe.user.id;
-		});
-
-		order.addEventListener("click", () => {
-			let name = document.getElementById("user_name").value;
-			let email = document.getElementById("user_email").value;
-			let phone = document.getElementById("user_phone").value;
-
-			let data = {
-				name: name,
-				email: email,
-				phone: phone
-			}
-			tg.sendData(JSON.stringify(data))
-
-			tg.close();
-		});
-	</script>
+    <div id="player"></div>
+    <div class="wall" style="top: 0; left: 0; width: 10px; height: 100%;"></div>
+    <div class="wall" style="top: 0; left: 0; width: 100%; height: 10px;"></div>
+    <div class="wall" style="top: 0; right: 0; width: 10px; height: 100%;"></div>
+    <div class="wall" style="bottom: 0; left: 0; width: 100%; height: 10px;"></div>
+    
+    <script>
+        document.addEventListener("keydown", function(event) {
+            const player = document.getElementById("player");
+            const step = 10;
+            
+            switch(event.keyCode) {
+                case 87: // W
+                    player.style.top = parseInt(player.style.top) - step + "px";
+                    break;
+                case 65: // A
+                    player.style.left = parseInt(player.style.left) - step + "px";
+                    break;
+                case 83: // S
+                    player.style.top = parseInt(player.style.top) + step + "px";
+                    break;
+                case 68: // D
+                    player.style.left = parseInt(player.style.left) + step + "px";
+                    break;
+            }
+        });
+    </script>
 </body>
 </html>
