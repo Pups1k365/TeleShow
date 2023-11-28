@@ -5,7 +5,6 @@
     <title>3D Лабиринт</title>
     <style>
       body { margin: 0; overflow: hidden; }
-      canvas { display: block; margin: auto; }
     </style>
   </head>
   <body>
@@ -45,27 +44,25 @@
         scene.add(walls[i]);
       }
 
-      // Mouse control
-      var mouse = new THREE.Vector2();
+      // Переменные для отслеживания положения мыши
+      var mouseX = 0;
+      var windowHalfX = window.innerWidth / 2;
 
+      // Обработчик события движения мыши
       function onMouseMove(event) {
-        // Calculate mouse position in normalized device coordinates
-        // (-1 to +1) for both components
-        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        mouseX = (event.clientX - windowHalfX) * 0.1;
       }
 
-      document.addEventListener('mousemove', onMouseMove, false);
-
-      function updateCamera() {
-        camera.position.x += mouse.x;
-        camera.lookAt( scene.position );
-      }
+      // Добавление обработчиков событий мыши
+      document.addEventListener("mousemove", onMouseMove, false);
 
       // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
-        updateCamera();
+
+        // Изменение положения камеры по горизонтали на основе положения мыши
+        camera.position.x += (mouseX - camera.position.x) * 0.05;
+
         renderer.render(scene, camera);
       }
 
