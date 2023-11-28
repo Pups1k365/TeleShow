@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>3D Лабиринт</title>
+    <title>3D sss</title>
     <style>
       body { margin: 0; overflow: hidden; }
     </style>
@@ -44,55 +44,56 @@
         scene.add(walls[i]);
       }
 
-      // Добавляем управление камерой мышью
+      // Переменные для управления мышью
       var mouse = new THREE.Vector2();
-      var center = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
-      var angle = new THREE.Vector2();
+      var prevMouse = new THREE.Vector2();
+      var isMouseDown = false;
 
-      document.addEventListener('mousemove', function(event) {
+      // Обработчик движения мыши
+      function handleMouseMove(event) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      });
-
-      function updateCamera() {
-        angle.subVectors(mouse, center).multiplyScalar(0.001);
-        camera.rotation.y -= angle.x;
-        camera.rotation.x -= angle.y;
-        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
       }
 
-      // Функция анимации и управления
+      // Обработчик нажатия кнопки мыши
+      function handleMouseDown() {
+        isMouseDown = true;
+      }
+
+      // Обработчик отпускания кнопки мыши
+      function handleMouseUp() {
+        isMouseDown = false;
+      }
+
+      // Обработчик изменения размера окна
+      function handleWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      // Добавляем обработчики событий мыши
+      document.addEventListener("mousemove", handleMouseMove, false);
+      document.addEventListener("mousedown", handleMouseDown, false);
+      document.addEventListener("mouseup", handleMouseUp, false);
+      window.addEventListener("resize", handleWindowResize, false);
+
+      // Функция анимации и управления мышью
       function animate() {
         requestAnimationFrame(animate);
-        updateCamera();
-        // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["w"]) { // W
-          camera.position.x -= Math.sin(camera.rotation.y) * 0.1;
-          camera.position.z -= Math.cos(camera.rotation.y) * 0.1;
+
+        // Поворот камеры при движении мыши влево или вправо
+        if (isMouseDown) {
+          var rotationSpeed = 0.01;
+          camera.rotation.y -= (mouse.x - prevMouse.x) * rotationSpeed;
         }
-        if (keyboard["a"]) { // A
-          camera.position.x -= Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
-          camera.position.z -= Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
-        }
-        if (keyboard["s"]) { // S
-          camera.position.x += Math.sin(camera.rotation.y) * 0.1;
-          camera.position.z += Math.cos(camera.rotation.y) * 0.1;
-        }
-        if (keyboard["d"]) { // D
-          camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * 0.1;
-          camera.position.z += Math.cos(camera.rotation.y - Math.PI / 2) * 0.1;
-        }
+
+        // Закрепление мыши в центре экрана
+        prevMouse.x = mouse.x;
+        prevMouse.y = mouse.y;
+
         renderer.render(scene, camera);
       }
-
-      // Обработчик событий клавиатуры
-      var keyboard = {};
-      document.addEventListener('keydown', function(event) {
-        keyboard[event.keyCode] = true;
-      });
-      document.addEventListener('keyup', function(event) {
-        keyboard[event.keyCode] = false;
-      });
 
       animate();
     </script>
