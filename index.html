@@ -50,31 +50,60 @@
 
         // Движение камеры при нажатии клавиш W, A, S или D
         if (keyboard["w"]) {
-          camera.position.z -= 0.1;
+          // Проверка на столкновение со стеной перед камерой
+          var nextPosition = camera.position.clone();
+          nextPosition.z -= 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.z -= 0.1;
+          }
         }
         if (keyboard["a"]) {
-          camera.position.x -= 0.1;
+          // Проверка на столкновение со стеной слева от камеры
+          var nextPosition = camera.position.clone();
+          nextPosition.x -= 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.x -= 0.1;
+          }
         }
         if (keyboard["s"]) {
-          camera.position.z += 0.1;
+          // Проверка на столкновение со стеной за камерой
+          var nextPosition = camera.position.clone();
+          nextPosition.z += 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.z += 0.1;
+          }
         }
         if (keyboard["d"]) {
-          camera.position.x += 0.1;
+          // Проверка на столкновение со стеной справа от камеры
+          var nextPosition = camera.position.clone();
+          nextPosition.x += 0.1;
+          if (!checkCollision(nextPosition)) {
+            camera.position.x += 0.1;
+          }
         }
 
         renderer.render(scene, camera);
       }
 
-      // Обработка клавиатуры
+      // Функция проверки столкновения с блоками
+      function checkCollision(position) {
+        for (var i = 0; i < walls.length; i++) {
+          if (position.distanceTo(walls[i].position) < 1) {
+            return true; // Столкновение обнаружено
+          }
+        }
+        return false; // Столкновение не обнаружено
+      }
+
+      // Обработчик нажатия клавиш
       var keyboard = {};
-      window.addEventListener("keydown", function(event) {
+      document.addEventListener("keydown", function(event) {
         keyboard[event.key] = true;
       });
-      window.addEventListener("keyup", function(event) {
+      document.addEventListener("keyup", function(event) {
         keyboard[event.key] = false;
       });
 
-      // Запускаем анимацию
       animate();
     </script>
   </body>
