@@ -1,70 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Лабиринт</title>
-    <style>
-        body {
-            background-color: black;
-            margin: 0;
-        }
-        
-        .wall {
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            position: absolute;
-        }
-        
-        .player {
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            position: absolute;
-        }
-    </style>
+<style>
+    body {
+        background-color: black;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    #maze {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    .wall {
+        position: absolute;
+        background-color: white;
+        width: 20px;
+        height: 20px;
+    }
+    
+    #player {
+        position: absolute;
+        background-color: red;
+        width: 20px;
+        height: 20px;
+    }
+</style>
 </head>
 <body>
-    <div id="maze">
-        <!-- Здесь разместите стены лабиринта -->
-        <div class="wall" style="top: 0px; left: 0px;"></div>
-        <div class="wall" style="top: 0px; left: 20px;"></div>
-        <div class="wall" style="top: 20px; left: 20px;"></div>
-        <!-- Продолжайте добавлять стены по мере необходимости -->
-    </div>
+<div id="maze"></div>
 
-    <div id="player" class="player"></div>
-
-    <script>
-        // Получаем ссылки на элементы лабиринта и игрока
-        const maze = document.getElementById('maze');
-        const player = document.getElementById('player');
-
-        // Устанавливаем начальные координаты игрока
-        let playerX = 0;
-        let playerY = 0;
-
-        // Функция обработки нажатий клавиш
-        function handleKeyPress(event) {
-            const key = event.key;
-
-            // Изменяем координаты игрока в зависимости от нажатой клавиши
-            if (key === 'w') {
-                playerY -= 20;
-            } else if (key === 's') {
-                playerY += 20;
-            } else if (key === 'a') {
-                playerX -= 20;
-            } else if (key === 'd') {
-                playerX += 20;
-            }
-
-            // Обновляем позицию игрока на странице
-            player.style.top = playerY + 'px';
-            player.style.left = playerX + 'px';
+<script>
+    const maze = document.getElementById('maze');
+    const player = document.createElement('div');
+    player.id = 'player';
+    maze.appendChild(player);
+    
+    document.addEventListener('keydown', function(event) {
+        const key = event.key.toLowerCase();
+        
+        if (key === 'w') {
+            player.style.top = parseInt(player.style.top) - 20 + 'px';
+        } else if (key === 'a') {
+            player.style.left = parseInt(player.style.left) - 20 + 'px';
+        } else if (key === 's') {
+            player.style.top = parseInt(player.style.top) + 20 + 'px';
+        } else if (key === 'd') {
+            player.style.left = parseInt(player.style.left) + 20 + 'px';
         }
-
-        // Добавляем обработчик события нажатия клавиш
-        document.addEventListener('keydown', handleKeyPress);
-    </script>
+    });
+</script>
 </body>
 </html>
