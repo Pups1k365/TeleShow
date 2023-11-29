@@ -44,90 +44,53 @@
         scene.add(walls[i]);
       }
 
-      // Получаем середину экрана
-      var centerX = window.innerWidth / 2;
-      var centerY = window.innerHeight / 2;
-
-      // Закрепляем указатель мыши по центру
-      function lockPointer() {
-        renderer.domElement.requestPointerLock();
-      }
-      lockPointer();
-
-      // Обработчик перемещения мыши
-      function handleMouseMove(event) {
-        // Получаем изменение положения мыши
-        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-
-        // Вращаем камеру влево или вправо
-        camera.rotation.y -= movementX * 0.002;
-      }
-
-      // Добавляем обработчик перемещения мыши
-      document.addEventListener('mousemove', handleMouseMove);
-
-      // Функция проверки столкновений со стенами
-      function checkCollision(position) {
-        for (var i = 0; i < walls.length; i++) {
-          if (Math.abs(position.x - walls[i].position.x) < 0.5 && Math.abs(position.z - walls[i].position.z) < 0.5) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      // Объект клавиатуры для управления камерой
-      var keyboard = {};
-
-      // Добавляем обработчики нажатия и отпускания клавиш
-      document.addEventListener('keydown', function(event) {
-        keyboard[event.code] = true;
-      });
-      document.addEventListener('keyup', function(event) {
-        keyboard[event.code] = false;
-      });
+      // Переменные для вращения камеры при движении мыши
+      var mouse = new THREE.Vector2();
+      var previousMouseX = 0;
 
       // Функция анимации и управления
       function animate() {
         requestAnimationFrame(animate);
 
+        // Вращение камеры при движении мыши
+        var currentMouseX = mouse.x;
+        var mouseDeltaX = currentMouseX - previousMouseX;
+        camera.rotation.y -= mouseDeltaX * 0.01;
+        previousMouseX = currentMouseX;
+
         // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["w"]) {
-          // Проверка на столкновение со стеной перед камерой
-          var nextPosition = camera.position.clone();
-          nextPosition.z -= 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.z -= 0.1;
-          }
+        if (keyboard["W"]) {
+          camera.position.z -= 0.1;
         }
-        if (keyboard["a"]) {
-          // Проверка на столкновение со стеной слева от камеры
-          var nextPosition = camera.position.clone();
-          nextPosition.x -= 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.x -= 0.1;
-          }
+        if (keyboard["A"]) {
+          camera.position.x -= 0.1;
         }
-        if (keyboard["s"]) {
-          // Проверка на столкновение со стеной за камерой
-          var nextPosition = camera.position.clone();
-          nextPosition.z += 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.z += 0.1;
-          }
+        if (keyboard["S"]) {
+          camera.position.z += 0.1;
         }
-        if (keyboard["d"]) {
-          // Проверка на столкновение со стеной справа от камеры
-          var nextPosition = camera.position.clone();
-          nextPosition.x += 0.1;
-          if (!checkCollision(nextPosition)) {
-            camera.position.x += 0.1;
-          }
+        if (keyboard["D"]) {
+          camera.position.x += 0.1;
         }
 
-        // Рендерим сцену
         renderer.render(scene, camera);
       }
+
+      // Обработчики событий для отслеживания нажатия клавиш
+      var keyboard = {};
+      document.addEventListener("keydown", function(event) {
+        keyboard[event.key] = true;
+      });
+      document.addEventListener("keyup", function(event) {
+        keyboard[event.key] = false;
+      });
+
+      // Обработчики событий для отслеживания движения мыши и обновления координаты мыши
+      document.addEventListener("mousemove", function(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      });
+      document.addEventListener("mouseout", function() {
+        mouse.x = 0;
+      });
 
       animate();
     </script>
