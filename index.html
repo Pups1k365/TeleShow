@@ -55,7 +55,7 @@
         // Вращение камеры при движении мыши
         var currentMouseX = mouse.x;
         var mouseDeltaX = currentMouseX - previousMouseX;
-        camera.rotation.y -= mouseDeltaX * 0.01;
+        camera.rotation.y -= mouseDeltaX * 0.35;
         previousMouseX = currentMouseX;
 
         // Движение камеры при нажатии клавиш W, A, S или D
