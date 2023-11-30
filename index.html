@@ -44,80 +44,43 @@
         scene.add(walls[i]);
       }
 
-      // Создаем плоскость для обнаружения коллизий
-      var planeGeometry = new THREE.PlaneGeometry(100, 100);
-      var planeMaterial = new THREE.MeshBasicMaterial({ visible: false });
-      var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      scene.add(plane);
+      // Обработчик события движения мыши
+      document.addEventListener('mousemove', function(event) {
+        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        camera.rotation.y -= movementX * 0.01;
+      });
 
-      // Создаем объект игрока
-      var player = { height: 1.8, speed: 0.2 };
-
-      // Создаем объект клавиатуры
-      var keyboard = {};
-
-      // Обработчик нажатия клавиш
+      // Обработчик событий клавиатуры
       document.addEventListener('keydown', function(event) {
-        keyboard[event.code] = true;
+        if (event.key === 'w') {
+          var direction = new THREE.Vector3(0, 0, -0.23);
+          direction.applyQuaternion(camera.quaternion);
+          camera.position.add(direction);
+        }
+        if (event.key === 'a') {
+          var direction = new THREE.Vector3(-0.23, 0, 0);
+          direction.applyQuaternion(camera.quaternion);
+          camera.position.add(direction);
+        }
+        if (event.key === 's') {
+          var direction = new THREE.Vector3(0, 0, 0.23);
+          direction.applyQuaternion(camera.quaternion);
+          camera.position.add(direction);
+        }
+        if (event.key === 'd') {
+          var direction = new THREE.Vector3(0.23, 0, 0);
+          direction.applyQuaternion(camera.quaternion);
+          camera.position.add(direction);
+        }
       });
 
-      // Обработчик отпускания клавиш
-      document.addEventListener('keyup', function(event) {
-        keyboard[event.code] = false;
-      });
-
-      // Обработчик движения мыши
-      var mouse = new THREE.Vector2();
-      var raycaster = new THREE.Raycaster();
-      var theta = 0;
-
-      function onDocumentMouseMove(event) {
-        event.preventDefault();
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        theta = - (Math.atan( mouse.x / window.innerWidth * 2 ) - Math.PI / 2 );
-      }
-
-      document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-      // Функция анимации и управления
+      // Функция анимации
       function animate() {
         requestAnimationFrame(animate);
-
-        // Движение камеры при нажатии клавиш W, A, S или D
-        if (keyboard["W"]) {
-          camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
-          camera.position.z -= -Math.cos(camera.rotation.y) * player.speed;
-        }
-        if (keyboard["A"]) {
-          camera.position.x -= Math.sin(camera.rotation.y - Math.PI / 2) * player.speed;
-          camera.position.z -= -Math.cos(camera.rotation.y - Math.PI / 2) * player.speed;
-        }
-        if (keyboard["S"]) {
-          camera.position.x += Math.sin(camera.rotation.y) * player.speed;
-          camera.position.z += -Math.cos(camera.rotation.y) * player.speed;
-        }
-        if (keyboard["D"]) {
-          camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * player.speed;
-          camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2) * player.speed;
-        }
-
-        // Вращение камеры при движении мыши
-        raycaster.setFromCamera(mouse, camera);
-        var intersects = raycaster.intersectObjects(scene.children);
-        if (intersects.length > 0) {
-          var intersect = intersects[0];
-          if (intersect.object != plane) {
-            var target = new THREE.Vector3().copy(intersect.point);
-            target.y = camera.position.y;
-            camera.lookAt(target);
-            camera.rotation.y += theta * 5;
-          }
-        }
-
         renderer.render(scene, camera);
       }
 
+      // Запускаем анимацию
       animate();
     </script>
   </body>
