@@ -8,13 +8,12 @@ bot = telebot.TeleBot(TOKEN)
 
 start_time = datetime.now()
 
-
 @bot.message_handler(commands=['infobot'])
 def infobot_handler(message):
   current_time = datetime.now()
   uptime = current_time - start_time
   hours, remainder = divmod(uptime.seconds, 3600)
-  minutes, _ = divmod(remainder, 60)
+  minutes, seconds = divmod(remainder, 60)
 
   ping = (datetime.now() - current_time).microseconds / 1000
 
@@ -23,9 +22,15 @@ def infobot_handler(message):
   else:
     db_status = "потеря соединения"
 
-  response = (
-      f"ℹ️| <b>Время работы бота</b>: {hours} ч. {minutes} м.\n📶 | <b>Пинг:</b> {ping} мс.\n🈁 | <b>База данных</b>: {db_status}"
-  )
+  if hours > 0:
+      response = (
+          f"ℹ️| <b>Время работы бота</b>: {hours} ч. {minutes} м.\n📶 | <b>Пинг:</b> {ping} мс.\n🈁 | <b>База данных</b>: {db_status}"
+      )
+  else:
+      response = (
+          f"ℹ️| <b>Время работы бота</b>: {minutes} м. {seconds} c.\n📶 | <b>Пинг:</b> {ping} мс.\n🈁 | <b>База данных</b>: {db_status}"
+      )
   bot.reply_to(message, response, parse_mode='HTML')
+
 
 bot.polling()
