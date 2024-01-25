@@ -3,24 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отображение изображения</title>
+    <title>TeleShow</title>
 </head>
 <body>
-    <h1>Отображение изображения</h1>
-    <img id="playerImage" src="" alt="Player Image">
-
-    <script>
-        function updateImage(playerId, imageType) {
-            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
-            document.getElementById('playerImage').src = imageUrl;
-        }
-
-        // Пример использования:
-        var url = new URL(window.location.href);
-        var player = url.pathname.split('/').pop(); // Получаем часть URL после последнего слеша
-        var playerId = player.split('/')[0];
-        var imageType = player.split('/')[1];
-        updateImage(playerId, imageType);
-    </script>
+    <div id="player-image"></div>
+    <script src="app.js"></script>
 </body>
 </html>
