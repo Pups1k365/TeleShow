@@ -6,23 +6,35 @@
     <title>Отображение изображения</title>
 </head>
 <body>
-    <form id="imageForm">
-        <label for="playerId">Player ID:</label>
-        <input type="text" id="playerId" name="playerId">
-        <label for="imageType">Image Type:</label>
-        <input type="text" id="imageType" name="imageType">
-        <button type="button" onclick="showImage()">Показать изображение</button>
-    </form>
     <div id="imageContainer"></div>
 
     <script>
         function showImage() {
-            var playerId = document.getElementById('playerId').value;
-            var imageType = document.getElementById('imageType').value;
+            var playerId = 'Y0CQY90VQ'; // Значение playerId
+            var imageType = 'колетт'; // Значение imageType
             var imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
             var imageElement = `<img src="${imageUrl}" alt="Изображение">`;
             document.getElementById('imageContainer').innerHTML = imageElement;
         }
+
+        // Обработчик команды в консоли сайта
+        function handleConsoleCommand(command) {
+            if (command.startsWith('/stats')) {
+                var params = command.split(' ');
+                if (params.length === 3) {
+                    var playerId = params[1];
+                    var imageType = params[2];
+                    var imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
+                    var imageElement = `<img src="${imageUrl}" alt="Изображение">`;
+                    document.getElementById('imageContainer').innerHTML = imageElement;
+                } else {
+                    console.error('Invalid command format. Usage: /stats playerId imageType');
+                }
+            }
+        }
+
+        // Пример использования
+        handleConsoleCommand('/stats Y0CQY90VQ колетт');
     </script>
 </body>
 </html>
