@@ -5,7 +5,7 @@
   
   // Сохраняем изображение на хостинге
   $imageData = file_get_contents($imageUrl);
-  file_put_contents("player_images/{$playerId}_{$imageType}.png", $imageData);
+  file_put_contents("https://github.com/Pups1k365/TeleShow/tree/main/player_images/{$playerId}_{$imageType}.png", $imageData);
 
   // Открываем изображение на новой странице
   echo "<html>";
