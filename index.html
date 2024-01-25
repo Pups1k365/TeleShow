@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html>
-<body>
-
-<h2>Показать изображение</h2>
-
-<form action="/get_image" method="get">
-  <label for="player_id">Player ID:</label><br>
-  <input type="text" id="player_id" name="player_id" value="player2"><br>
-  <label for="image_type">Image Type:</label><br>
-  <input type="text" id="image_type" name="image_type" value="best"><br><br>
-  <input type="submit" value="Показать изображение">
-</form>
-
-<img id="player_image" src="" alt="Player Image">
-
-<script>
-  const form = document.querySelector('form');
-  const playerImage = document.getElementById('player_image');
-
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const playerID = document.getElementById('player_id').value;
-    const imageType = document.getElementById('image_type').value;
-    const imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerID}/${imageType}.png?background=cartoon_lobby.jpg`;
-    playerImage.src = imageUrl;
-  });
-</script>
-
+<head>
+    <title>Отображение фото</title>
+    <script>
+        function showPhoto() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var player_id = urlParams.get("player_id");
+            var image_type = urlParams.get("image_type");
+            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${player_id}/${image_type}.png?background=cartoon_lobby.jpg`;
+            document.getElementById("photo").src = imageUrl;
+        }
+    </script>
+</head>
+<body onload="showPhoto()">
+    <img id="photo" src="" alt="Фото игрока">
 </body>
 </html>
