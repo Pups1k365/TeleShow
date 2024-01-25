@@ -28,7 +28,7 @@
         function showImage() {
             var player = document.getElementById('playerInput').value;
             var tag = document.getElementById('tagInput').value;
-            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${player}/${tag}.png?background=cartoon_lobby.jpg`;
+            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${tag}/${player}.png?background=cartoon_lobby.jpg`;
             var imageContainer = document.getElementById('imageContainer');
             imageContainer.innerHTML = `<img src="${imageUrl}" alt="Изображение игрока">`;
         }
