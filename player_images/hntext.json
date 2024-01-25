@@ -1,0 +1,32 @@
+﻿    "пайпер": [
+        [
+            InputMediaPhoto(media="https://wimg.rule34.xxx//images/7703/ae296a9a27068047051ba1ac3f8775a2.jpeg?8794480", caption="?? | #пайпер", has_spoiler=True),
+            InputMediaPhoto(media="https://wimg.rule34.xxx//images/7703/278986bb0136aa3959eea9a0a8393d06.jpeg?8794501", has_spoiler=True),
+            InputMediaPhoto(media="https://wimg.rule34.xxx//images/7703/74cbd1fd26ded12b505e20c16a6a2db6.jpeg?8794527", has_spoiler=True)
+        ],
+        [
+            InputMediaPhoto(media="https://rule34.xxx//samples/5380/sample_9b882ef0bf0bb67e09ea13a87253a0d6.jpg?6128340", caption="?? | #пайпер", has_spoiler=True),
+            InputMediaPhoto(media="https://rule34.xxx//samples/5380/sample_2c65a34076a23e6c1b3b83adc7d36840.jpg?6128342", has_spoiler=True),
+        ]
+    ],
+    "new": [
+        [
+            InputMediaPhoto(media="https://rule34.xxx//samples/5380/sample_9b882ef0bf0bb67e09ea13a87253a0d6.jpg?6128340", caption="?? | #пайпер #чарли #беа #new\n?? | <b>Naked AI by @pups1k666</b> (кроме пайпер)?\n?? | <b>Последние обновление:</b> <i>9:00 21.01.24</i>", has_spoiler=True ,parse_mode="HTML"),
+            InputMediaPhoto(media="https://rule34.xxx//samples/5380/sample_2c65a34076a23e6c1b3b83adc7d36840.jpg?6128342", has_spoiler=True),
+			InputMediaPhoto(media="https://wimg.rule34.xxx//images/2304/c3037f2e6bc9cc9660606e02d99856e4.png?9325521", has_spoiler=True),
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/photo_2024-01-21_08-55-51.jpg", has_spoiler=True),
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/beano228.jpg", has_spoiler=True),
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/beayes228.jpg", has_spoiler=True),
+        ]
+    ],
+    "чарли": [
+        [
+			InputMediaPhoto(media="https://wimg.rule34.xxx//images/2304/c3037f2e6bc9cc9660606e02d99856e4.png?9325521", caption="?? | #чарли #ai\n?? | <b>Naked AI by @pups1k666</b>", has_spoiler=True ,parse_mode="HTML"),
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/photo_2024-01-21_08-55-51.jpg", has_spoiler=True),
+        ]
+    ],
+    "беа": [
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/beano228.jpg",caption="?? | #беа #ai\n?? | <b>Naked AI by @pups1k666</b>", has_spoiler=True ,parse_mode="HTML"),
+			InputMediaPhoto(media="https://uvdmain.000webhostapp.com/beayes228.jpg", has_spoiler=True),
+        ]
+    ]
