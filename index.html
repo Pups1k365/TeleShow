@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Отображение изображения на весь экран</title>
+    <title>Пример</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        img {
-            max-width: 100%;
-            max-height: 100%;
+        #message {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <input type="text" id="playerInput" placeholder="Введите имя игрока">
-    <input type="text" id="tagInput" placeholder="Введите тэг">
-    <button onclick="showImage()">Показать изображение</button>
-    <div id="imageContainer"></div>
-
+    <div id="message"></div>
     <script>
-        function showImage() {
-            var player = document.getElementById('playerInput').value;
-            var tag = document.getElementById('tagInput').value;
-            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${tag}/${player}.png?background=cartoon_lobby.jpg`;
-            var imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = `<img src="${imageUrl}" alt="Изображение игрока">`;
+        const url = window.location.href;
+        const prefix = 'https://pups1k365.github.io/TeleShow/';
+        if (url.startsWith(prefix)) {
+            const message = url.slice(prefix.length);
+            document.getElementById('message').innerText = message;
         }
     </script>
 </body>
