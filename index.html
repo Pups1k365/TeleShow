@@ -26,6 +26,27 @@
     const imageType = urlParams.get('type');
     const imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
     document.getElementById('playerImage').src = imageUrl;
+
+    // Сохранение изображения
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'player_image.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+
+    // Открытие новой страницы с фото
+    function openImageInNewTab() {
+      const newTab = window.open("", "_blank");
+      newTab.document.write('<img src="' + imageUrl + '">');
+    }
+
+    openImageInNewTab();
   </script>
 </body>
 </html>
