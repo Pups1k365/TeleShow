@@ -1,36 +1,44 @@
-const express = require('express');
-const fs = require('fs');
-const app = express();
-
-app.get('/save-image', (req, res) => {
-  const urlParams = new URLSearchParams(req.query);
-  const playerId = urlParams.get('player_id');
-  const imageType = urlParams.get('type');
-  const imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
-
-  // Сохраняем изображение на сервере
-  const imageName = `player_${playerId}_${imageType}.png`;
-  const imagePath = `images/${imageName}`;
-  const file = fs.createWriteStream(imagePath);
-  const request = https.get(imageUrl, function(response) {
-    response.pipe(file);
-  });
-
-  // Отправляем HTML с изображением на новой странице
-  const pageHtml = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Изображение игрока</title>
-    </head>
-    <body>
-      <img src="${imagePath}" alt="Изображение игрока">
-    </body>
-    </html>
-  `;
-  res.send(pageHtml);
-});
-
-app.listen(3000, () => {
-  console.log('Сервер запущен на порту 3000');
-});
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Изображение игрока</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <?php
+  if(isset($_GET['player_id']) && isset($_GET['type'])){
+      $playerId = $_GET['player_id'];
+      $imageType = $_GET['type'];
+      $imageUrl = "https://www.brawltime.ninja/api/render/profile/{$playerId}/{$imageType}.png?background=cartoon_lobby.jpg";
+      
+      // Получение изображения
+      $imageData = file_get_contents($imageUrl);
+      
+      // Генерация уникального имени файла
+      $filename = uniqid() . '.png';
+      
+      // Сохранение изображения на сервере
+      file_put_contents($filename, $imageData);
+      
+      // Отображение изображения на новой странице
+      echo "<img src='{$filename}'>";
+  } else {
+      echo "Неверные параметры запроса";
+  }
+  ?>
+</body>
+</html>
