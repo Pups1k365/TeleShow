@@ -3,10 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeleShow</title>
+    <title>Отображение изображения</title>
 </head>
 <body>
-    <div id="player-image"></div>
-    <script src="app.js"></script>
+    <form id="imageForm">
+        <label for="playerId">Player ID:</label>
+        <input type="text" id="playerId" name="playerId">
+        <label for="imageType">Image Type:</label>
+        <input type="text" id="imageType" name="imageType">
+        <button type="button" onclick="showImage()">Показать изображение</button>
+    </form>
+    <div id="imageContainer"></div>
+
+    <script>
+        function showImage() {
+            var playerId = document.getElementById('playerId').value;
+            var imageType = document.getElementById('imageType').value;
+            var imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
+            var imageElement = `<img src="${imageUrl}" alt="Изображение">`;
+            document.getElementById('imageContainer').innerHTML = imageElement;
+        }
+    </script>
 </body>
 </html>
