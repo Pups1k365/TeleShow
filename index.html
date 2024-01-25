@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Привет</title>
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  </style>
-</head>
+<html>
 <body>
-  <h1>Привет</h1>
+
+<h2>Показать изображение</h2>
+
+<form action="/get_image" method="get">
+  <label for="player_id">Player ID:</label><br>
+  <input type="text" id="player_id" name="player_id" value="player2"><br>
+  <label for="image_type">Image Type:</label><br>
+  <input type="text" id="image_type" name="image_type" value="best"><br><br>
+  <input type="submit" value="Показать изображение">
+</form>
+
+<img id="player_image" src="" alt="Player Image">
+
+<script>
+  const form = document.querySelector('form');
+  const playerImage = document.getElementById('player_image');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const playerID = document.getElementById('player_id').value;
+    const imageType = document.getElementById('image_type').value;
+    const imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerID}/${imageType}.png?background=cartoon_lobby.jpg`;
+    playerImage.src = imageUrl;
+  });
+</script>
+
 </body>
 </html>
