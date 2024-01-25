@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пример</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        #message {
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Изображение игрока</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
 </head>
 <body>
-    <div id="message"></div>
-    <script>
-        const url = window.location.href;
-        const prefix = 'https://pups1k365.github.io/TeleShow/';
-        if (url.startsWith(prefix)) {
-            const message = url.slice(prefix.length);
-            document.getElementById('message').innerText = message;
-        }
-    </script>
+  <img id="playerImage">
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerId = urlParams.get('player_id');
+    const imageType = urlParams.get('type');
+    const imageUrl = `https://www.brawltime.ninja/api/render/profile/${playerId}/${imageType}.png?background=cartoon_lobby.jpg`;
+    document.getElementById('playerImage').src = imageUrl;
+  </script>
 </body>
 </html>
