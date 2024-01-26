@@ -1,16 +1,13 @@
 <?php
-  $playerId = $_GET['player_id'];
-  $imageType = $_GET['type'];
-  $imageUrl = "https://www.brawltime.ninja/api/render/profile/{$playerId}/{$imageType}.png?background=cartoon_lobby.jpg";
-  
-  // Сохраняем изображение на хостинге
-  $imageData = file_get_contents($imageUrl);
-  file_put_contents("https://github.com/Pups1k365/TeleShow/tree/main/player_images/{$playerId}_{$imageType}.png", $imageData);
+// URL изображения для сохранения
+$imageUrl = 'http://pups1k.000.pe/player_images/299J9L9PR_mico.png';
 
-  // Открываем изображение на новой странице
-  echo "<html>";
-  echo "<body>";
-  echo "<img src='player_images/{$playerId}_{$imageType}.png'>";
-  echo "</body>";
-  echo "</html>";
+// Имя файла, в котором будет сохранено изображение
+$fileName = 'saved_image.png';
+
+// Сохранение изображения из указанного URL
+file_put_contents($fileName, file_get_contents($imageUrl));
+
+// Показ изображения
+echo '<img src="' . $fileName . '" alt="Saved Image">';
 ?>
