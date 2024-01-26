@@ -1,44 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Изображение игрока</title>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отображение изображения</title>
 </head>
 <body>
-  <?php
-  if(isset($_GET['player_id']) && isset($_GET['type'])){
-      $playerId = $_GET['player_id'];
-      $imageType = $_GET['type'];
-      $imageUrl = "https://www.brawltime.ninja/api/render/profile/{$playerId}/{$imageType}.png?background=cartoon_lobby.jpg";
-      
-      // Получение изображения
-      $imageData = file_get_contents($imageUrl);
-      
-      // Генерация уникального имени файла
-      $filename = uniqid() . '.png';
-      
-      // Сохранение изображения на сервере
-      file_put_contents($filename, $imageData);
-      
-      // Отображение изображения на новой странице
-      echo "<img src='{$filename}'>";
-  } else {
-      echo "Неверные параметры запроса";
-  }
-  ?>
+    <img id="imageDisplay" src="" alt="Изображение">
+
+    <script>
+        // Получаем параметр URL из адресной строки
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('url');
+
+        // Проверяем, есть ли значение параметра URL и обновляем src изображения
+        if (imageUrl) {
+            document.getElementById('imageDisplay').src = imageUrl;
+        }
+    </script>
 </body>
 </html>
