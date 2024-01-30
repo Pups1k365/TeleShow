@@ -3,8 +3,7 @@
   
   // Скачиваем изображение и отправляем его для скачивания
   $imageData = file_get_contents($imageUrl);
-  header('Content-Type: application/octet-stream');
-  header("Content-Transfer-Encoding: Binary"); 
-  header("Content-disposition: attachment; filename=\"bibi_image.png\""); 
+  header('Content-Type: image/png');
+  header('Content-Disposition: attachment; filename="bibi_image.png"');
   echo $imageData;
 ?>
