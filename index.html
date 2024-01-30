@@ -1,26 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Скачивание изображения</title>
-    <script>
-        window.onload = function() {
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            xhr.onload = function() {
-                if (this.status === 200) {
-                    var url = window.URL || window.webkitURL;
-                    var imageUrl = url.createObjectURL(this.response);
-                    var img = document.createElement('img');
-                    img.src = imageUrl;
-                    document.body.appendChild(img);
-                }
-            };
-            xhr.open('GET', 'https://www.brawltime.ninja/api/render/profile/299J9L9PR/best.png?background=brawl_stars_lobby.jpg', true);
-            xhr.send();
-        };
-    </script>
-</head>
 <body>
-    <h1>Скачивание изображения</h1>
+
+<?php
+    $file = 'https://www.brawltime.ninja/api/render/profile/299J9L9PR/best.png?background=brawl_stars_lobby.jpg';
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="'.basename($file).'"');
+    readfile($file);
+?>
+
 </body>
 </html>
