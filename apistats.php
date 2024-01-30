@@ -1,11 +1,12 @@
 <?php
-// URL изображения для сохранения
-$imageUrl = 'http://pups1k.000.pe/player_images/299J9L9PR_mico.png';
-
-// Сохранение изображения в локальный файл
-$localImage = 'saved_image.png';
-file_put_contents($localImage, file_get_contents($imageUrl));
-
-// Отображение сохраненного изображения
-echo '<img src="' . $localImage . '" alt="Saved Image">';
+  $playerId = $_GET['player_id'];
+  $imageType = $_GET['type'];
+  $imageUrl = "https://www.brawltime.ninja/api/render/profile/{$playerId}/{$imageType}.png?background=cartoon_lobby.jpg";
+  
+  // Скачиваем изображение и отправляем его для скачивания
+  $imageData = file_get_contents($imageUrl);
+  header('Content-Type: application/octet-stream');
+  header("Content-Transfer-Encoding: Binary"); 
+  header("Content-disposition: attachment; filename=\"{$playerId}_{$imageType}.png\""); 
+  echo $imageData;
 ?>
