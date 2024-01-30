@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Скачать изображение</title>
-</head>
-<body>
-    <script>
-        // Выполнение запроса к PHP-скрипту при загрузке страницы
-        fetch('apistats.php')
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'bibi_image.png';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            });
-    </script>
-</body>
+<html>
+  <body>
+    <?php
+      $playerId = '299J9L9PR'; // здесь укажите нужный playerId
+      $imageType = 'bibi'; // здесь укажите нужный тип изображения
+      $imageUrl = "https://www.brawltime.ninja/api/render/profile/{$playerId}/{$imageType}.png?background=cartoon_lobby.jpg";
+      
+      // Скачиваем изображение и отправляем его для скачивания
+      $imageData = file_get_contents($imageUrl);
+      header('Content-Type: application/octet-stream');
+      header("Content-Transfer-Encoding: Binary"); 
+      header("Content-disposition: attachment; filename=\"{$playerId}_{$imageType}.png\""); 
+      echo $imageData;
+    ?>
+  </body>
 </html>
