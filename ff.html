@@ -4,10 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Пример iframe</title>
+  <script>
+    window.onload = function() {
+      var player = new URLSearchParams(window.location.search).get('player');
+      var type = new URLSearchParams(window.location.search).get('type');
+      var iframe = document.createElement('iframe');
+      iframe.src = "https://pups1k.000webhostapp.com/?player=" + player + "&type=" + type;
+      iframe.width = 600;
+      iframe.height = 400;
+      iframe.title = "testik.php";
+      document.body.appendChild(iframe);
+    };
+  </script>
 </head>
 <body>
-
-<iframe src="https://pups1k.000webhostapp.com/?player=299J9L9PR&type=best" width="600" height="400" title="testik.php"></iframe>
-
 </body>
 </html>
